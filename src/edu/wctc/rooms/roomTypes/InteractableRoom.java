@@ -7,6 +7,7 @@ public class InteractableRoom extends Room implements Interactable {
     private boolean interacted = false;
 
     private String heldItem = null;
+    private int amountOfItem = 0;
     private String interactString;
 
     public InteractableRoom(String name, String description, String interactString) {
@@ -21,8 +22,8 @@ public class InteractableRoom extends Room implements Interactable {
             this.interacted = true;
             sb.append(getInteractString());
             if(heldItem != null) {
-                player.addToInventory(heldItem);
-                sb.append(String.format("\n%s added to your inventory!", heldItem.toUpperCase()));
+                for(int i = 0; i < amountOfItem; i++) player.addToInventory(heldItem);
+                sb.append(String.format("\n\n%d %s(s) added to your inventory!\n", amountOfItem, heldItem.toUpperCase()));
             }
             return sb.toString();
         } else return "Nothing to interact with.";
@@ -31,6 +32,11 @@ public class InteractableRoom extends Room implements Interactable {
     @Override
     public void setHeldItem(String item) {
         this.heldItem = item;
+    }
+
+    @Override
+    public void setAmountOfItem(int amount) {
+        this.amountOfItem = amount;
     }
 
     @Override

@@ -1,7 +1,8 @@
 package edu.wctc;
 
+import edu.wctc.FactoryPattern.RoomFactory;
+import edu.wctc.PureFabrication.ActionDeterminer;
 import edu.wctc.rooms.interfaces.*;
-import edu.wctc.rooms.*;
 import edu.wctc.rooms.interfaces.Room;
 import edu.wctc.rooms.roomTypes.InteractableRoom;
 
@@ -22,33 +23,38 @@ public class Maze {
     private Maze() {
         this.player = new Player();
 
+        // start player with 5 lockpicks
+        for(int i = 0; i < 5; i++) this.player.addToInventory("lockpick");
+
         // ROOMS
 
         // starting room needs to be selected
-//        Room strangePlace = new StrangePlace("STRANGE PLACE");
-        this.currentRoom = null; //  strangePlace;
+        Room room1 = RoomFactory.createRoom(
+            "STARTING ROOM", // name
+            "Your journey starts here.", // description
+            null, // exit string
+            "You notice that whoever left you in here left their keys nearby.",
+            false, // exitable
+            true // interactable
+        );
+        putItem("key", (InteractableRoom)room1, 5);
+        this.currentRoom = room1;
 
-//        Room ominousHallway = new OminousHallway("OMINOUS HALLWAY");
-//        Room infestedCrook = new InfestedCrook("INFESTED CROOK");
-//        Room melancholySkylight = new MelancholySkylight("MELANCHOLY SKYLIGHT");
-//        Room collapsedTomb = new CollapsedTomb("COLLAPSED TOMB", melancholySkylight);
-//        Room finalRestingPlace = new FinalRestingPlace("FINAL RESTING PLACE");
+        Room room2 = RoomFactory.createRoom(
+            "SECOND ROOM",
+            "You made it out of the first room.",
+            null,
+            "You notice there is more than one path to go down.\nYou find some lockpicks on a shelf nearby.",
+            false,
+            true
+        );
+        putItem("lockpick", (InteractableRoom)room2, 3);
+
 
         // SETTING ROOM CONNECTIONS
-//        strangePlace.setNorth(ominousHallway);
-//
-//        ominousHallway.setSouth(strangePlace);
-//        ominousHallway.setWest(infestedCrook);
-//        ominousHallway.setEast(collapsedTomb);
-//
-//        infestedCrook.setEast(ominousHallway);
-//
-//        collapsedTomb.setWest(ominousHallway);
-//        collapsedTomb.setNorth(finalRestingPlace);
-//
-//        melancholySkylight.setDown(collapsedTomb);
-//
-//        finalRestingPlace.setSouth(collapsedTomb);
+        room1.setNorth(room2);
+
+        room2.setSouth(room1);
     }
 
     public String exitCurrentRoom() {
@@ -59,13 +65,17 @@ public class Maze {
         } else return "\nCan not exit the labyrinth from this room.\n";
     }
 
-    public String interactWithCurrentRoom() {
-        if(this.currentRoom instanceof Interactable interact) return interact.interact(this.player);
-        else return "\nNo interactions with this room are possible.\n";
-    }
-
     public boolean canMove(char direction) {
         return this.currentRoom.isValidDirection(direction);
+    }
+
+    public String goToRoom(char direction) {
+        if(!currentRoom.isDoorLocked(direction)) {
+            this.currentRoom = this.currentRoom.convertCharToDir(direction);
+            return "You have moved to " + currentRoom.getName() + "\n";
+        } else {
+            return player.openDoor(direction, ActionDeterminer.getOpenStrategyFromInput());
+        }
     }
 
     public int getPlayerScore() {
@@ -73,7 +83,7 @@ public class Maze {
     }
 
     public String getPlayerInventory() {
-        return this.player.getInventory();
+        return this.player.displayInventory();
     }
 
     public String getCurrentRoomDescription() {
@@ -100,7 +110,8 @@ public class Maze {
         return this.isFinished;
     }
 
-    public void putItem(String item, InteractableRoom room) {
+    private void putItem(String item, InteractableRoom room, int amountOfItem) {
         room.setHeldItem(item);
+        room.setAmountOfItem(amountOfItem);
     }
 }

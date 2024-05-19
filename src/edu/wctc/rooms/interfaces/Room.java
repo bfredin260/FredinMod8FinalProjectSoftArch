@@ -13,8 +13,12 @@ public abstract class Room {
     private Room east;
     private Room south;
     private Room west;
-    private Room up;
-    private Room down;
+
+    // Stores if the door in each direction is locked
+    private boolean northLocked = true;
+    private boolean eastLocked = true;
+    private boolean southLocked = true;
+    private boolean westLocked = true;
 
     public Room(String name, String description) {
         this.name = name;
@@ -23,11 +27,6 @@ public abstract class Room {
 
     public String getDescription() {
         return this.description;
-    }
-
-    public Room getAdjoiningRoom(char direction) {
-        if(isValidDirection(direction)) return convertCharToDir(direction);
-        else return null;
     }
 
     public String getExits() {
@@ -65,24 +64,45 @@ public abstract class Room {
         this.west = room;
     }
 
-    public void setUp(Room room) {
-        this.up = room;
+    public void unlock(char direction) {
+        switch(direction) {
+            case 'n':
+                this.northLocked = false;
+                this.north.southLocked = false;
+                break;
+            case 'e':
+                this.eastLocked = false;
+                this.east.westLocked = false;
+                break;
+            case 's':
+                this.southLocked = false;
+                this.south.northLocked = false;
+                break;
+            case 'w':
+                this.westLocked = false;
+                this.west.eastLocked = false;
+                break;
+        }
     }
 
-    public void setDown(Room room) {
-        this.down = room;
+    public boolean isDoorLocked(char direction) {
+        return switch(direction) {
+            case 'n' -> this.northLocked;
+            case 'e' -> this.eastLocked;
+            case 's' -> this.southLocked;
+            case 'w' -> this.westLocked;
+            default -> true;
+        };
     }
 
     // added this so that I can easily convert the char ('n', 'e', 's', 'w', 'u', or 'd') into their corresponding
     // cardinal directions so that they can be used.
-    Room convertCharToDir(char direction) {
+    public Room convertCharToDir(char direction) {
         return switch (direction) {
             case 'n' -> this.north;
             case 'e' -> this.east;
             case 's' -> this.south;
             case 'w' -> this.west;
-            case 'u' -> this.up;
-            case 'd' -> this.down;
             default -> null;
         };
     }
