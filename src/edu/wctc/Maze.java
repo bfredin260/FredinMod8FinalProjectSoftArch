@@ -1,8 +1,7 @@
 package edu.wctc;
 
 import edu.wctc.FactoryPattern.RoomFactory;
-import edu.wctc.PureFabrication.ActionDeterminer;
-import edu.wctc.rooms.interfaces.*;
+import edu.wctc.PureFabrication.Determiner;
 import edu.wctc.rooms.interfaces.Room;
 import edu.wctc.rooms.roomTypes.InteractableRoom;
 
@@ -28,16 +27,19 @@ public class Maze {
 
         // ROOMS
 
-        // starting room needs to be selected
         Room room1 = RoomFactory.createRoom(
             "STARTING ROOM", // name
             "Your journey starts here.", // description
             null, // exit string
-            "You notice that whoever left you in here left their keys nearby.",
+            "You notice that whoever left you in here left their keys nearby.", // interact string
             false, // exitable
             true // interactable
         );
+
+        // set item to pick up when interacting
         putItem("key", (InteractableRoom)room1, 5);
+
+        // starting room needs to be selected
         this.currentRoom = room1;
 
         Room room2 = RoomFactory.createRoom(
@@ -57,24 +59,23 @@ public class Maze {
         room2.setSouth(room1);
     }
 
-    public String exitCurrentRoom() {
-        if(this.currentRoom instanceof Exitable exitable) {
-            this.isFinished = true;
-            this.player.addScore(450);
-            return exitable.exit(this.player);
-        } else return "\nCan not exit the labyrinth from this room.\n";
-    }
-
     public boolean canMove(char direction) {
         return this.currentRoom.isValidDirection(direction);
     }
 
-    public String goToRoom(char direction) {
+    // information expert pattern - this method was originally in the Determiner class, but it fits in this one
+    //  better, since this class contians the information necessary.
+    public String tryToMove(char userInput, String direction) {
+        if(canMove(userInput)) return move(userInput);
+        else return "You can't go " + direction + ".\n";
+    }
+
+    public String move(char direction) {
         if(!currentRoom.isDoorLocked(direction)) {
             this.currentRoom = this.currentRoom.convertCharToDir(direction);
             return "You have moved to " + currentRoom.getName() + "\n";
         } else {
-            return player.openDoor(direction, ActionDeterminer.getOpenStrategyFromInput());
+            return player.openDoor(direction, Determiner.determineOpenStrategyFromInput());
         }
     }
 
@@ -98,16 +99,16 @@ public class Maze {
         return this.currentRoom;
     }
 
-    public void setCurrentRoom(Room room) {
-        this.currentRoom = room;
-    }
-
     public Player getPlayer() {
         return this.player;
     }
 
     public boolean isFinished() {
         return this.isFinished;
+    }
+
+    public void finish() {
+        this.isFinished = true;
     }
 
     private void putItem(String item, InteractableRoom room, int amountOfItem) {

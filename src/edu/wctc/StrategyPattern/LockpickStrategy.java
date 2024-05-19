@@ -8,32 +8,32 @@ public class LockpickStrategy implements OpenStrategy {
     }
 
     @Override
-    public int successRewardAmount() {
+    public int successPointReward() {
         return 150;
     }
 
     @Override
-    public int failPunishmentAmount() {
+    public int failurePointDeduction() {
         return -50;
     }
 
     @Override
-    public String getStrategyName() {
+    public String strategyName() {
         return "lockpick";
     }
 
     @Override
-    public boolean successUsesItem() {
+    public boolean successConsumesItem() {
         return true;
     }
 
     @Override
-    public boolean failUsesItem() {
+    public boolean failureConsumesItem() {
         return true;
     }
 
     @Override
-    public String itemToUse() {
+    public String itemToConsume() {
         return "lockpick";
     }
 }

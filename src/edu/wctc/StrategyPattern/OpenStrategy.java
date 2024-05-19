@@ -4,12 +4,12 @@ package edu.wctc.StrategyPattern;
 public interface OpenStrategy {
     double successRate();
 
-    int successRewardAmount();
-    int failPunishmentAmount();
+    int successPointReward();
+    int failurePointDeduction();
 
-    String getStrategyName();
+    String strategyName();
 
-    boolean successUsesItem();
-    boolean failUsesItem();
-    String itemToUse();
+    boolean successConsumesItem();
+    boolean failureConsumesItem();
+    String itemToConsume();
 }

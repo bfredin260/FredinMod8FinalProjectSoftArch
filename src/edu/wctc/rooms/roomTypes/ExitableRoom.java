@@ -4,8 +4,10 @@ import edu.wctc.Player;
 import edu.wctc.rooms.interfaces.Exitable;
 import edu.wctc.rooms.interfaces.Room;
 
+import static edu.wctc.Main.maze;
+
 public class ExitableRoom extends Room implements Exitable {
-    String exitString;
+    private String exitString;
 
     public ExitableRoom(String name, String description, String exitString) {
         super(name, description);
@@ -14,6 +16,8 @@ public class ExitableRoom extends Room implements Exitable {
 
     @Override
     public String exit(Player player) {
+        maze.finish();
+        maze.getPlayer().addScore(450);
         return getExitString();
     }
 

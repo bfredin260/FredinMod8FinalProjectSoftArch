@@ -3,6 +3,8 @@ package edu.wctc.rooms.roomTypes;
 import edu.wctc.Player;
 import edu.wctc.rooms.interfaces.*;
 
+import static edu.wctc.Main.maze;
+
 public class InteractableRoom extends Room implements Interactable {
     private boolean interacted = false;
 
@@ -20,6 +22,7 @@ public class InteractableRoom extends Room implements Interactable {
         StringBuilder sb = new StringBuilder();
         if(!interacted) {
             this.interacted = true;
+            maze.getPlayer().addScore(50);
             sb.append(getInteractString());
             if(heldItem != null) {
                 for(int i = 0; i < amountOfItem; i++) player.addToInventory(heldItem);

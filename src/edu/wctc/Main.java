@@ -1,10 +1,8 @@
 package edu.wctc;
 
-import edu.wctc.PureFabrication.ActionDeterminer;
+import edu.wctc.PureFabrication.Determiner;
 import edu.wctc.PureFabrication.ConsoleOutput;
 import edu.wctc.PureFabrication.UserInput;
-
-import java.util.Scanner;
 
 public class Main {
     // singleton so that only one Maze can exist
@@ -21,7 +19,7 @@ public class Main {
             ConsoleOutput.outputLine("\nPlease enter a command (enter 'c' for valid entries).");
             ConsoleOutput.outputOpen(">> ");
             ConsoleOutput.outputLine("\n---------------------------------------------" +
-                    ActionDeterminer.determineAction(UserInput.getInput()));
+                    Determiner.determineAction(UserInput.getInput()));
             ConsoleOutput.outputLine("---------------------------------------------\n");
         } while(!maze.isFinished());
 

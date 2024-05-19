@@ -3,8 +3,10 @@ package edu.wctc.rooms.roomTypes;
 import edu.wctc.Player;
 import edu.wctc.rooms.interfaces.*;
 
+import static edu.wctc.Main.maze;
+
 public class BothRoom extends InteractableRoom implements Exitable, Interactable {
-    String exitString;
+    private String exitString;
 
     public BothRoom(String name, String description, String exitString, String interactString) {
         super(name, description, exitString);
@@ -14,6 +16,8 @@ public class BothRoom extends InteractableRoom implements Exitable, Interactable
 
     @Override
     public String exit(Player player) {
+        maze.finish();
+        maze.getPlayer().addScore(450);
         return getExitString();
     }
 

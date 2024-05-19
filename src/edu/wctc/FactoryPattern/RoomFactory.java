@@ -5,8 +5,9 @@ import edu.wctc.rooms.roomTypes.*;
 
 // Factory method pattern
 
-// Every google search, StackOverflow page, and other person I have consulted has told me that a factory is used to
-//  solve an existing problem, not to create a new one. Even so, I came up with this.
+// Every google search, Stack Overflow page, and other person I have consulted with has told me that a factory is used
+//  to solve an existing problem, not to create a new one. I did not have a need for a Factory, even so, I came up with
+//  this.
 public class RoomFactory {
     public static Room createRoom(String name, String description, String exitString, String interactString, boolean exitable, boolean interactable) {
         if(exitable)

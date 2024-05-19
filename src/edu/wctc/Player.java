@@ -1,6 +1,7 @@
 package edu.wctc;
 
 import edu.wctc.StrategyPattern.OpenStrategy;
+import edu.wctc.rooms.interfaces.Exitable;
 import edu.wctc.rooms.interfaces.Interactable;
 
 import java.util.ArrayList;
@@ -45,37 +46,41 @@ public class Player {
         boolean success = new Random().nextInt(100) < openStrategy.successRate() * 100;
 
         if(success) {
-            addScore(openStrategy.successRewardAmount());
+            addScore(openStrategy.successPointReward());
             maze.getCurrentRoom().unlock(direction);
 
             // removes item from player's inventory if necessary
-            if(openStrategy.successUsesItem()) removeFromInventory(openStrategy.itemToUse());
+            if(openStrategy.successConsumesItem()) removeFromInventory(openStrategy.itemToConsume());
 
             return "Successfully opened door using " +
-                openStrategy.getStrategyName() +
+                openStrategy.strategyName() +
                 " (+" +
-                openStrategy.successRewardAmount() +
+                openStrategy.successPointReward() +
                 " points)\n\n" +
-                maze.goToRoom(direction)
+                maze.move(direction)
             ;
         }
         else {
-            addScore(openStrategy.failPunishmentAmount());
+            addScore(openStrategy.failurePointDeduction());
 
             // removes item from player's inventory if necessary
-            if(openStrategy.failUsesItem()) removeFromInventory(openStrategy.itemToUse());
+            if(openStrategy.failureConsumesItem()) removeFromInventory(openStrategy.itemToConsume());
 
             return "Failed to open door using " +
-                openStrategy.getStrategyName() +
+                openStrategy.strategyName() +
                 " (" +
-                openStrategy.failPunishmentAmount() +
+                openStrategy.failurePointDeduction() +
                 " points)\n\n";
         }
     }
 
-
     public String interact() {
         if(maze.getCurrentRoom() instanceof Interactable interactable) return interactable.interact(this);
         else return "\nNo interactions with this room are possible.\n";
+    }
+
+    public String exit() {
+        if(maze.getCurrentRoom() instanceof Exitable exitable) return exitable.exit(this);
+        else return "\nCan not exit the labyrinth from this room.\n";
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 import static edu.wctc.Main.maze;
 
 // Pure Fabrication
-public class ActionDeterminer {
+public class Determiner {
 
     /**
      *  determines the action that the user wants to perform
@@ -20,23 +20,22 @@ public class ActionDeterminer {
      * @return String for output where this method is called
      */
     public static String determineAction(String userInput) {
-        char inputChar;
         if(!userInput.isEmpty() && userInput != null) {
-            inputChar = userInput.toLowerCase().charAt(0);
+            char inputChar = userInput.toLowerCase().charAt(0);
             return switch (inputChar) {
                 // 'n', 'e', 's', 'w', 'u', and 'd' are "movement" inputs
-                case 'n' -> "\n\nMOVE:\n" + getDirWalked(inputChar, "North");
-                case 'e' -> "\n\nMOVE:\n" + getDirWalked(inputChar, "East");
-                case 's' -> "\n\nMOVE:\n" + getDirWalked(inputChar, "South");
-                case 'w' -> "\n\nMOVE:\n" + getDirWalked(inputChar, "West");
-                case 'u' -> "\n\nMOVE:\n" + getDirWalked(inputChar, "Up");
-                case 'd' -> "\n\nMOVE:\n" + getDirWalked(inputChar, "Down");
+                case 'n' -> "\n\nMOVE:\n" + maze.tryToMove(inputChar, "North");
+                case 'e' -> "\n\nMOVE:\n" + maze.tryToMove(inputChar, "East");
+                case 's' -> "\n\nMOVE:\n" + maze.tryToMove(inputChar, "South");
+                case 'w' -> "\n\nMOVE:\n" + maze.tryToMove(inputChar, "West");
+                case 'u' -> "\n\nMOVE:\n" + maze.tryToMove(inputChar, "Up");
+                case 'd' -> "\n\nMOVE:\n" + maze.tryToMove(inputChar, "Down");
 
                 // 'i' is the "interact" input
                 case 'i' -> "\n\nINTERACT:\n" + maze.getPlayer().interact();
 
                 // 'x' is the "exit" input
-                case 'x' -> "\n\nEXIT:\n" + maze.exitCurrentRoom();
+                case 'x' -> "\n\nEXIT:\n" + maze.getPlayer().exit();
 
                 // 'v' is the "inventory" input
                 case 'v' -> "\n\nINVENTORY:\n\n" + maze.getPlayerInventory() + "\n";
@@ -65,20 +64,9 @@ public class ActionDeterminer {
     }
 
     /**
-     *  determines the direction the user is trying to move
-     * @param userInput directional input as a char
-     * @param direction direction string for display purposes
-     * @return String for output where this method is called
-     */
-    private static String getDirWalked(char userInput, String direction) {
-        if(maze.canMove(userInput)) return maze.goToRoom(userInput);
-        else return "You can't go " + direction + ".\n";
-    }
-
-    /**
-     * Gets input from the user to decide which strategy they want to use
+     *  determines the Open Strategy to be used
      * */
-    public static OpenStrategy getOpenStrategyFromInput() {
+    public static OpenStrategy determineOpenStrategyFromInput() {
         // for querying inventory
         Player player = maze.getPlayer();
 
@@ -114,19 +102,7 @@ public class ActionDeterminer {
         // makes sure that the user's input is valid, reruns loop if it isn't
         } while (!validOptions.contains(inputChar));
 
-        return determineStrategy(inputChar, key, lockpick, kickdown);
-    }
-
-    /**
-     * determines the strategy to use based on the user's input
-     * @param strategyChar user's option as a char
-     * @param key KeyStrategy for return
-     * @param lockpick LockpickStrategy for return
-     * @param kickdown KickDownStrategy for return
-     * @return OpenStrategy based on user's input
-     */
-    private static OpenStrategy determineStrategy(char strategyChar, OpenStrategy key, OpenStrategy lockpick, OpenStrategy kickdown) {
-        return switch(strategyChar) {
+        return switch(inputChar) {
             case 'k' -> key;
             case 'l' -> lockpick;
             default -> kickdown;

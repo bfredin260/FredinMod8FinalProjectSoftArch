@@ -1,6 +1,6 @@
 package edu.wctc.PureFabrication;
 
-// Pure Fabrication
+// Pure Fabrication / Indirection (Wrapper)
 public class ConsoleOutput {
     public static void outputLine(String message) {
         System.out.println(message);

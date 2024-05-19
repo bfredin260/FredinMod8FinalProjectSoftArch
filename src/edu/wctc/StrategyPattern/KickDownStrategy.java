@@ -8,32 +8,32 @@ public class KickDownStrategy implements OpenStrategy{
     }
 
     @Override
-    public int successRewardAmount() {
+    public int successPointReward() {
         return 50;
     }
 
     @Override
-    public int failPunishmentAmount() {
+    public int failurePointDeduction() {
         return -100;
     }
 
     @Override
-    public String getStrategyName() {
+    public String strategyName() {
         return "kickdown";
     }
 
     @Override
-    public boolean successUsesItem() {
+    public boolean successConsumesItem() {
         return false;
     }
 
     @Override
-    public boolean failUsesItem() {
+    public boolean failureConsumesItem() {
         return false;
     }
 
     @Override
-    public String itemToUse() {
+    public String itemToConsume() {
         return null;
     }
 }
