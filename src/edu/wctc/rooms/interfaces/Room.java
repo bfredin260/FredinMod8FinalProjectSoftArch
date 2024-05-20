@@ -35,8 +35,6 @@ public abstract class Room {
         if(isValidDirection('e')) exits.add("East");
         if(isValidDirection('s')) exits.add("South");
         if(isValidDirection('w')) exits.add("West");
-        if(isValidDirection('u')) exits.add("Up");
-        if(isValidDirection('d')) exits.add("Down");
         return exits.toString();
     }
 

@@ -27,9 +27,9 @@ public class Maze {
 
         // ROOMS
 
-        Room room1 = RoomFactory.createRoom(
-            "STARTING ROOM", // name
-            "Your journey starts here.", // description
+        Room containmentChamber = RoomFactory.createRoom(
+            "CONTAINMENT CHAMBER", // name
+            "You can't stay here any longer.", // description
             null, // exit string
             "You notice that whoever left you in here left their keys nearby.", // interact string
             false, // exitable
@@ -37,26 +37,188 @@ public class Maze {
         );
 
         // set item to pick up when interacting
-        putItem("key", (InteractableRoom)room1, 5);
+        putItem("key", (InteractableRoom)containmentChamber, 5);
 
         // starting room needs to be selected
-        this.currentRoom = room1;
+        this.currentRoom = containmentChamber;
 
-        Room room2 = RoomFactory.createRoom(
-            "SECOND ROOM",
-            "You made it out of the first room.",
+        Room facilityHallwaySW = RoomFactory.createRoom(
+            "FACILITY HALLWAY - SOUTHWEST",
+            "You look around you and recognize nothing.",
             null,
             "You notice there is more than one path to go down.\nYou find some lockpicks on a shelf nearby.",
             false,
-            true
+            true // interactable
         );
-        putItem("lockpick", (InteractableRoom)room2, 3);
+        putItem("lockpick", (InteractableRoom)facilityHallwaySW, 3);
 
+        Room serverRoom = RoomFactory.createRoom(
+            "SERVER ROOM",
+            "This must be where they store their files.",
+            null,
+            "You look through the master computer and find out the exit door requires 5 keycards to unlock during the night.",
+            false,
+            true // interactable
+        );
+
+        Room masterControl = RoomFactory.createRoom(
+            "SERVER ROOM - MASTER CONTROL",
+            "Looks like this is where they control the building's electronics.",
+            null,
+            "You notice whoever was here last left their keycard sitting next to the cotrol panel.",
+            false,
+            true // interactable
+        );
+        putItem("keycard", (InteractableRoom) masterControl, 1);
+
+        Room employeeOffices = RoomFactory.createRoom(
+            "EMPLOYEE OFFICES",
+            "The empty cubicles make you uneasy.\nThey are WAY too clean, as if nobody was ever here.",
+            null,
+            null,
+            false,
+            false
+        );
+
+        Room managersOffice = RoomFactory.createRoom(
+            "MANAGER'S OFFICE",
+            "The manager's chair stands elegantly amidst the room, resembling a throne.",
+            null,
+            "A quick search through the file cabinets reveals the manager's backup keycard.",
+            false,
+            true // interactable
+        );
+        putItem("keycard", (InteractableRoom) managersOffice, 1);
+
+        Room facilityHallwaySE = RoomFactory.createRoom(
+            "FACILITY HALLWAY - SOUTHEAST",
+            "All these long hallways make it difficult to orient your location within the facility.",
+            null,
+            "For once, you can see the outside world.\nThe moonlight shines faintly through the foggy windows.",
+            false,
+            true // interactable
+        );
+
+        Room meetingRoom = RoomFactory.createRoom(
+            "MEETING ROOM",
+            "You are surrounded by white boards, the large table in the middle of the room stands out.",
+            null,
+            "One of the chairs has a set of keys hanging off of it.\nSomeone must have been in a hurry.",
+            false,
+            true // interactable
+        );
+        putItem("key", (InteractableRoom) meetingRoom, 3);
+
+        Room employeeBreakRoom = RoomFactory.createRoom(
+            "EMPLOYEE BREAK ROOM",
+            "These working conditions are outrageous!",
+            null,
+            "Apart from the boring walls and maggot-infested fabric chairs, you find a keycard in an employee's coat pocket hanging on the wall",
+            false,
+            true // interactable
+        );
+        putItem("keycard", (InteractableRoom) employeeBreakRoom, 1);
+
+        Room facilityHallwayW = RoomFactory.createRoom(
+            "FACILITY HALLWAY - WEST",
+            "This hallway seems to never end.",
+            null,
+            null,
+            false,
+            false
+        );
+
+        Room employeeBathroom = RoomFactory.createRoom(
+            "EMPLOYEE BATHROOM",
+            "Thank God. You've been holding this one in forEVER.",
+            null,
+            "While taking a piss, you notice a keycard in a puddle on the floor.\nLooks like someone doesn't want that back.",
+            false,
+            true // interactable
+        );
+        putItem("keycard", (InteractableRoom) employeeBathroom, 1);
+
+        Room facilityHallwayNW = RoomFactory.createRoom(
+            "FACILITY HALLWAY - NORTH WEST",
+            "If only by a miracle, you reach a turning point in this hallway.",
+            null,
+            "You inspect each tile on the floor in this corner of the hallway.\nThere seems to be nothing of interest here.",
+            false,
+            true // interactable
+        );
+
+        Room waitingRoom = RoomFactory.createRoom(
+            "WAITING ROOM",
+            "What kind of facility is this? Where are you?",
+            null,
+            "Out of the corner of your eye, you notice the receptionist's keys amongst the files and folders on their desk.",
+            false,
+            true // interactable
+        );
+        putItem("key", (InteractableRoom) waitingRoom, 2);
+
+        Room waitingRoomBathroom = RoomFactory.createRoom(
+            "WAITING ROOM - BATHROOM",
+            "This bathroom is 10x worse than the employee's bathroom.",
+            null,
+            "What is with keycards being attracted to bathroom puddles?",
+            false,
+            true // interactable
+        );
+        putItem("keycard", (InteractableRoom) waitingRoomBathroom, 1);
+
+        Room facilityEntrance = RoomFactory.createRoom(
+            "FACILITY ENTRANCE",
+            "The outside is so close, but the doors are locked!",
+            "You scan all 5 keycards and the doors automatically unlock.\nYou are free.",
+            "You see a terminal for keycards to be scanned.",
+            true, // exitable
+            true // interactable
+        );
 
         // SETTING ROOM CONNECTIONS
-        room1.setNorth(room2);
+        containmentChamber.setNorth(facilityHallwaySW);
 
-        room2.setSouth(room1);
+        facilityHallwaySW.setNorth(facilityHallwayW);
+        facilityHallwaySW.setEast(employeeOffices);
+        facilityHallwaySW.setSouth(containmentChamber);
+        facilityHallwaySW.setWest(serverRoom);
+
+        serverRoom.setNorth(masterControl);
+        serverRoom.setEast(facilityHallwaySW);
+
+        masterControl.setSouth(serverRoom);
+
+        employeeOffices.setEast(facilityHallwaySE);
+        employeeOffices.setSouth(managersOffice);
+        employeeOffices.setWest(facilityHallwaySW);
+
+        managersOffice.setNorth(employeeOffices);
+
+        facilityHallwaySE.setNorth(meetingRoom);
+        facilityHallwaySE.setEast(employeeBreakRoom);
+        facilityHallwaySE.setWest(employeeOffices);
+
+        meetingRoom.setSouth(facilityHallwaySE);
+
+        employeeBreakRoom.setWest(facilityHallwaySE);
+
+        facilityHallwayW.setNorth(facilityHallwayNW);
+        facilityHallwayW.setEast(employeeBathroom);
+        facilityHallwayW.setSouth(facilityHallwaySW);
+
+        employeeBathroom.setWest(facilityHallwayW);
+
+        facilityHallwayNW.setEast(waitingRoom);
+        facilityHallwayNW.setSouth(facilityHallwayW);
+
+        waitingRoom.setNorth(facilityEntrance);
+        waitingRoom.setEast(waitingRoomBathroom);
+        waitingRoom.setWest(facilityHallwayNW);
+
+        waitingRoomBathroom.setWest(waitingRoom);
+
+        facilityEntrance.setSouth(waitingRoom);
     }
 
     public boolean canMove(char direction) {
@@ -113,6 +275,6 @@ public class Maze {
 
     private void putItem(String item, InteractableRoom room, int amountOfItem) {
         room.setHeldItem(item);
-        room.setAmountOfItem(amountOfItem);
+        room.setHeldItemAmount(amountOfItem);
     }
 }

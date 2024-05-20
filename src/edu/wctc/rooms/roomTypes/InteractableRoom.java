@@ -9,7 +9,7 @@ public class InteractableRoom extends Room implements Interactable {
     private boolean interacted = false;
 
     private String heldItem = null;
-    private int amountOfItem = 0;
+    private int heldItemAmount = 0;
     private String interactString;
 
     public InteractableRoom(String name, String description, String interactString) {
@@ -21,12 +21,13 @@ public class InteractableRoom extends Room implements Interactable {
     public String interact(Player player) {
         StringBuilder sb = new StringBuilder();
         if(!interacted) {
-            this.interacted = true;
+            interacted = true;
             maze.getPlayer().addScore(50);
             sb.append(getInteractString());
             if(heldItem != null) {
-                for(int i = 0; i < amountOfItem; i++) player.addToInventory(heldItem);
-                sb.append(String.format("\n\n%d %s(s) added to your inventory!\n", amountOfItem, heldItem.toUpperCase()));
+                for(int i = 0; i < heldItemAmount; i++) player.addToInventory(heldItem);
+                sb.append(String.format("\n\n%d %s(s) added to your inventory!\n", heldItemAmount, heldItem.toUpperCase()));
+                heldItemAmount = 0;
             }
             return sb.toString();
         } else return "Nothing to interact with.";
@@ -38,8 +39,8 @@ public class InteractableRoom extends Room implements Interactable {
     }
 
     @Override
-    public void setAmountOfItem(int amount) {
-        this.amountOfItem = amount;
+    public void setHeldItemAmount(int amount) {
+        this.heldItemAmount = amount;
     }
 
     @Override

@@ -40,6 +40,12 @@ public class Player {
         return inventory.contains(item);
     }
 
+    public int amountOfItemInInventory(String item) {
+        int amount = 0;
+        for(String i : inventory) if(i.equals(item)) amount++;
+        return amount;
+    }
+
 
     public String openDoor(char direction, OpenStrategy openStrategy) {
         // if the strategy succeeds or not
