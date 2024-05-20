@@ -5,6 +5,9 @@ import edu.wctc.PureFabrication.ConsoleOutput;
 import edu.wctc.PureFabrication.UserInput;
 
 public class Main {
+
+    // !! READ THE README.MD FILE PLEASE
+
     // singleton so that only one Maze can exist
     public static Maze maze = Maze.getInstance();
 
