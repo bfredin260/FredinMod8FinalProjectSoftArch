@@ -1,8 +1,7 @@
 package edu.wctc.JUnitTests;
 
 import edu.wctc.Player;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,7 +15,7 @@ class PlayerTest {
     }
 
     @Test
-    public void amountOfItemInInventoryTest() {
+     void amountOfItemInInventoryTest() {
         assertEquals(5, player.amountOfItemInInventory("testItem"), "Should be 5 items in the inventory");
     }
 }

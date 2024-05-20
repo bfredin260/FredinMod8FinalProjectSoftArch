@@ -1,8 +1,7 @@
 package edu.wctc.JUnitTests;
 
 import edu.wctc.Maze;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 

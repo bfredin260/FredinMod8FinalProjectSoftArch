@@ -24,27 +24,26 @@ public class Determiner {
             char inputChar = userInput.toLowerCase().charAt(0);
             return switch (inputChar) {
                 // 'n', 'e', 's', 'w', 'u', and 'd' are "movement" inputs
-                case 'n' -> "\n\nMOVE:\n" + maze.tryToMove(inputChar, "North");
-                case 'e' -> "\n\nMOVE:\n" + maze.tryToMove(inputChar, "East");
-                case 's' -> "\n\nMOVE:\n" + maze.tryToMove(inputChar, "South");
-                case 'w' -> "\n\nMOVE:\n" + maze.tryToMove(inputChar, "West");
-                case 'u' -> "\n\nMOVE:\n" + maze.tryToMove(inputChar, "Up");
-                case 'd' -> "\n\nMOVE:\n" + maze.tryToMove(inputChar, "Down");
+                case 'n' -> "\n\n" + convertCharToAction(inputChar) + ":\n" + maze.tryToMove(inputChar, "North");
+                case 'e' -> "\n\n" + convertCharToAction(inputChar) + ":\n" + maze.tryToMove(inputChar, "East");
+                case 's' -> "\n\n" + convertCharToAction(inputChar) + ":\n" + maze.tryToMove(inputChar, "South");
+                case 'w' -> "\n\n" + convertCharToAction(inputChar) + ":\n" + maze.tryToMove(inputChar, "West");
+                case 'u' -> "\n\n" + convertCharToAction(inputChar) + ":\n" + maze.tryToMove(inputChar, "Up");
+                case 'd' -> "\n\n" + convertCharToAction(inputChar) + ":\n" + maze.tryToMove(inputChar, "Down");
 
                 // 'i' is the "interact" input
-                case 'i' -> "\n\nINTERACT:\n" + maze.getPlayer().interact();
+                case 'i' -> "\n\n" + convertCharToAction(inputChar) + ":\n" + maze.getPlayer().interact();
 
                 // 'x' is the "exit" input
-                case 'x' -> "\n\nEXIT:\n" + maze.getPlayer().exit();
+                case 'x' -> "\n\n" + convertCharToAction(inputChar) + ":\n" + maze.getPlayer().exit();
 
                 // 'v' is the "inventory" input
-                case 'v' -> "\n\nINVENTORY:\n\n" + maze.getPlayerInventory() + "\n";
+                case 'v' -> "\n\n" + convertCharToAction(inputChar) + ":\n\n" + maze.getPlayerInventory() + "\n";
 
                 // I added a way for the user to see a list of all valid entries, since they might not know the controls
-                case 'c' -> """
-    
-    
-                        VALID ENTRIES:
+                case 'c' -> "\n\n" + convertCharToAction(inputChar) +
+
+                        ":" + """
     
                         'n' -> Move north.
                         'e' -> Move east.
@@ -63,6 +62,20 @@ public class Determiner {
         } else return "\n\nPlease enter a valid entry ('"+ userInput +"' is not a valid entry).\n";
     }
 
+    // for the test class
+    public static String convertCharToAction(char actionChar) {
+        return switch(actionChar) {
+            case 'n' -> "MOVE NORTH";
+            case 'e' -> "MOVE EAST";
+            case 's' -> "MOVE SOUTH";
+            case 'w' -> "MOVE WEST";
+            case 'i' -> "INTERACT";
+            case 'x' -> "EXIT";
+            case 'v' -> "VIEW INVENTORY";
+            case 'c' -> "VALID ENTRIES";
+            default -> null;
+        };
+    }
     /**
      *  determines the Open Strategy to be used
      * */
@@ -70,8 +83,7 @@ public class Determiner {
         // for querying inventory
         Player player = maze.getPlayer();
 
-        // we need to get the successRate for each of the strategies anyway, so returning them will be easier if we
-        //  initialize them first
+        // we need to get the successRate for each of the strategies
         OpenStrategy key = new KeyStrategy();
         OpenStrategy lockpick = new LockpickStrategy();
         OpenStrategy kickdown = new KickDownStrategy();
@@ -102,10 +114,16 @@ public class Determiner {
         // makes sure that the user's input is valid, reruns loop if it isn't
         } while (!validOptions.contains(inputChar));
 
-        return switch(inputChar) {
-            case 'k' -> key;
-            case 'l' -> lockpick;
-            default -> kickdown;
+        return convertCharToOpenStrategy(inputChar);
+    }
+
+    // for the test class
+    public static OpenStrategy convertCharToOpenStrategy(char strategyChar) {
+        return switch(strategyChar) {
+            case 'k' -> new KeyStrategy();
+            case 'l' -> new LockpickStrategy();
+            case 'x' -> new KickDownStrategy();
+            default -> null;
         };
     }
 }

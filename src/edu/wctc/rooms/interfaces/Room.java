@@ -94,7 +94,10 @@ public abstract class Room {
     }
 
     // added this so that I can easily convert the char ('n', 'e', 's', 'w', 'u', or 'd') into their corresponding
-    // cardinal directions so that they can be used.
+    //  cardinal directions so that they can be used.
+
+    // Information Expert - this could be in the Determiner class, but this class knows the information necessary and
+    //  the other class does not.
     public Room convertCharToDir(char direction) {
         return switch (direction) {
             case 'n' -> this.north;
