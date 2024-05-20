@@ -10,7 +10,7 @@ public class Maze {
     public static Maze INSTANCE = null;
 
     private Room currentRoom;
-    private Player player;
+    private final Player player;
 
     private boolean isFinished = false;
 

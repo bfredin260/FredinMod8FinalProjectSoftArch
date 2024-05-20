@@ -76,6 +76,7 @@ public class Determiner {
             default -> null;
         };
     }
+
     /**
      *  determines the Open Strategy to be used
      * */

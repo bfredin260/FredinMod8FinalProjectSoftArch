@@ -12,7 +12,7 @@ import static edu.wctc.Main.maze;
 
 public class Player {
     private int score;
-    private List<String> inventory = new ArrayList<>();
+    private final List<String> inventory = new ArrayList<>();
 
     public int getScore() {
         return this.score;
@@ -27,6 +27,9 @@ public class Player {
         this.inventory.add(item);
     }
 
+    // it says that the return value is never used. I never needed to use it in my application, however if someone were
+    //  to add on to this with their own code, this can be called without validation, because it will not remove the
+    //  item if it is not in their inventory.
     public boolean removeFromInventory(String item) {
         return inventory.remove(item);
     }
